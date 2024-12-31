@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy New Year Wishes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(to bottom right, #7b2ff7, #fc5c7d, #ffb400);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .card-container {
+      position: relative;
+      width: 300px;
+      height: 400px;
+      perspective: 1000px;
+      opacity: 0;
+      animation: slideIn 1s forwards;
+    }
+
+    @keyframes slideIn {
+      0% {
+        transform: translateY(100px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .card {
+      background-color: white;
+      border-radius: 15px;
+      width: 100%;
+      height: 100%;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transform-style: preserve-3d;
+      transition: transform 1s ease, opacity 1s ease;
+      opacity: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .card.active {
+      opacity: 1;
+      transform: rotateY(0deg);
+    }
+
+    .card.next {
+      opacity: 0;
+      transform: rotateY(180deg);
+    }
+
+    .title {
+      font-size: 2.5rem;
+      font-weight: bold;
+      background: linear-gradient(to right, #ff4081, #ff6f61);
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 20px;
+    }
+
+    .message {
+      font-size: 1.2rem;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .stickers {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .sticker {
+      font-size: 2.5rem;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .sticker:hover {
+      transform: scale(1.3) rotate(15deg);
+    }
+
+    .heart {
+      font-size: 3rem;
+      color: red;
+      animation: bounce 1s infinite alternate;
+      margin-bottom: 20px;
+    }
+
+    @keyframes bounce {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.2);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .signature {
+      font-style: italic;
+      color: #888;
+      font-size: 1.1rem;
+    }
+
+    button {
+      background-color: #ff4081;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 10px;
+    }
+
+    .arrow-icon {
+      margin-left: 10px;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="card-container">
+    <!-- Card 1 -->
+    <div class="card active" id="card1">
+      <div class="title">Happy New Year 🎉</div>
+      <p class="message" id="message1">Dear Mrs Prerna Manpeet Singh, wishing you a year filled with laughter, love, and unforgettable moments.</p>
+      <div class="stickers" id="stickers1">
+      </div>
+      <div class="heart">❤️ 🎉</div>
+      <p class="signature" id="signature1">With love, Manpeet</p>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="card next" id="card2">
+      <div class="title">Cheers to Love 💖</div>
+      <p class="message" id="message2">May all your dreams come true in the coming year, and may our bond grow stronger every day. 🌟</p>
+      <div class="stickers" id="stickers2">
+      </div>
+      <div class="heart">💖</div>
+      <p class="signature" id="signature2">Forever yours, Manpeet</p>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="card next" id="card3">
+      <div class="title">Adventures Together 🌍</div>
+      <p class="message" id="message3">Cheers to a New Year full of joy, love, and endless adventures together. 🥂</p>
+      <div class="stickers" id="stickers3">
+      </div>
+      <div class="heart">🌹</div>
+      <p class="signature" id="signature3">Always with you, Manpeet</p>
+    </div>
+  </div>
+
+  <!-- Button to change cards -->
+  <button id="nextButton">
+    <i class="fas fa-arrow-right arrow-icon"></i>
+  </button>
+
+  <script>
+    const wishCards = [
+      {
+        message: "Dear [Her Name], wishing you a year filled with laughter, love, and unforgettable moments.",
+        signature: "With love, [Your Name]",
+      },
+      {
+        message: "May all your dreams come true in the coming year, and may our bond grow stronger every day. 🌟",
+        signature: "Forever yours, [Your Name]",
+      },
+      {
+        message: "Cheers to a New Year full of joy, love, and endless adventures together. 🥂",
+        signature: "Always with you, [Your Name]",
+      },
+    ];
+
+    let currentCardIndex = 0;
+
+    const nextButton = document.getElementById("nextButton");
+
+    nextButton.addEventListener("click", () => {
+      // Hide the current card
+      const currentCard = document.querySelector(`.card.active`);
+      currentCard.classList.remove("active");
+      currentCard.classList.add("next");
+
+      // Show the next card
+      currentCardIndex = (currentCardIndex + 1) % wishCards.length;
+      const nextCard = document.querySelectorAll(".card")[currentCardIndex];
+      nextCard.classList.remove("next");
+      nextCard.classList.add("active");
+
+      // Update content dynamically
+      document.querySelector(`.title`).textContent = `Happy New Year 🎉`;
+      document.querySelector(`.message`).textContent = wishCards[currentCardIndex].message;
+      document.querySelector(`.signature`).textContent = wishCards[currentCardIndex].signature;
+
+      const stickers = document.querySelector(".stickers");
+      stickers.innerHTML = wishCards[currentCardIndex].stickers
+        .map(sticker => `<span class="sticker">${sticker}</span>`)
+        .join("");
+    });
+  </script>
+</body>
+</html>
